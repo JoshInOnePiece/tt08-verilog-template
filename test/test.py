@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: © 2024 Tiny Tapeout
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
 
 import cocotb
 from cocotb.clock import Clock
@@ -10,31 +10,71 @@ from cocotb.triggers import ClockCycles
 async def test_project(dut):
     dut._log.info("Start")
 
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, units="us")
+    # Set the clock period to 10 us (100 MHz)
+    clock = Clock(dut.clk, 10, units="ns")
     cocotb.start_soon(clock.start())
+    dut.iEn.value = 0
+    dut.iData_in.value = 0
+    dut.iData_in.value = 0
+    dut.iRst.value = 0
+    dut.iLoad_key.value = 0
+    dut.iLoad_msg.value = 0
 
     # Reset
     dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
-
-    dut._log.info("Test project behavior")
-
-    # Set the input values you want to test
-    dut.ui_in.value = 20
-    dut.uio_in.value = 30
-
-    # Wait for one clock cycle to see the output values
+    dut.iRst.value = 0
     await ClockCycles(dut.clk, 1)
+    
+    await ClockCycles(dut.clk, 4)
+    dut.iLoad_key.value = 1
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 1
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 0
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 1
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 1
+    await ClockCycles(dut.clk, 4)
+    dut.iLoad_key.value = 0
 
-    # The following assersion is just an example of how to check the output values.
-    # Change it to match the actual expected output of your module:
-    assert dut.uo_out.value == 50
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 0
 
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
+    await ClockCycles(dut.clk, 4)
+    dut.iLoad_msg.value = 1
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 1
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 0
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 0
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 0
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 1
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 0
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 0
+    await ClockCycles(dut.clk, 4)
+    dut.iData_in.value = 1
+    await ClockCycles(dut.clk, 4)
+    dut.iLoad_msg.value = 0
+
+    await ClockCycles(dut.clk, 80)
+    """""
+    for i in range(256):
+        dut.uio_in.value = i
+        await ClockCycles(dut.clk, 1)
+        assert dut.uo_out.value == i
+
+    # When under reset: Output is uio_in, uio is in input mode
+    dut.rst_n.value = 0
+    await ClockCycles(dut.clk, 1)
+    assert dut.uio_oe.value == 0
+    for i in range(256):
+        dut.ui_in.value = i
+        await ClockCycles(dut.clk, 1)
+        assert dut.uo_out.value == i
+    """""

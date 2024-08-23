@@ -5,7 +5,12 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
+PROJECT_SOURCES = tt_um_franco_xor_top.v
+PROJECT_SOURCES = assemble_key.v
+PROJECT_SOURCES = serialize.v
+PROJECT_SOURCES = deserializer.v
+PROJECT_SOURCES = xor_encrypt.v
+PROJECT_SOURCES = clock_divider.v
 
 ifneq ($(GATES),yes)
 
