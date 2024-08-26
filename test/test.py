@@ -5,13 +5,32 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
 
+async def seriallyInput(DUT, dataType, data, clockDelay):
+    dataString = str(data)
+    if(dataType == 1): #This means that we are inputting a message
+        DUT.iLoad_msg.value = 1
+        await ClockCycles(DUT.iClk, clockDelay)
+        for x in range(512,0):
+            DUT.iData_in.value = int(dataString[x])
+            await ClockCycles(DUT.iClk, clockDelay)
+        DUT.iLoad_msg.value = 0
+        await ClockCycles(DUT.iClk, clockDelay)
+    else: # Otherwise we are inputting a key
+        DUT.iLoad_key.value = 1
+        await ClockCycles(DUT.iClk, clockDelay)
+        for x in range(32,0):
+            DUT.iData_in.value = int(dataString[x])
+            await ClockCycles(DUT.iClk, clockDelay)
+        DUT.iLoad_key.value = 0
+        await ClockCycles(DUT.iClk, clockDelay)
+
 
 @cocotb.test()
 async def test_project(dut):
     dut._log.info("Start")
 
     # Set the clock period to 10 us (100 MHz)
-    clock = Clock(dut.iClk, 10, units="ns")
+    clock = Clock(dut.iiClk, 10, units="ns")
     cocotb.start_soon(clock.start())
     dut.iEn.value = 0
     dut.iData_in.value = 0
@@ -25,6 +44,10 @@ async def test_project(dut):
     dut.iRst.value = 0
     await ClockCycles(dut.iClk, 1)
     
+    seriallyInput(DUT=dut, dataType=0, data=11011000110010110110001100101101, clockDelay=4)
+    seriallyInput(DUT=dut, dataType=0, data=11011000110010110110001100101101110110001100101101100011001011011101100011001011011000110010110111011000110010110110001100101101110110001100101101100011001011011101100011001011011000110010110111011000110010110110001100101101110110001100101101100011001011011101100011001011011000110010110111011000110010110110001100101101110110001100101101100011001011011101100011001011011000110010110111011000110010110110001100101101110110001100101101100011001011011101100011001011011000110010110111011000110010110110001100101101, clockDelay=4)
+    
+    """""
     await ClockCycles(dut.iClk, 4)
     dut.iLoad_key.value = 1
     await ClockCycles(dut.iClk, 4)
@@ -61,7 +84,7 @@ async def test_project(dut):
     dut.iData_in.value = 1
     await ClockCycles(dut.iClk, 4)
     dut.iLoad_msg.value = 0
-
+    """""
     await ClockCycles(dut.iClk, 80)
     """""
     for i in range(256):
