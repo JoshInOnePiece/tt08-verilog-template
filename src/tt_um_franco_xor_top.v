@@ -1,4 +1,4 @@
-module xor_top(
+module tt_um_franco_xor_top(
     input iEn,
     input iData_in,
     input iClk,
