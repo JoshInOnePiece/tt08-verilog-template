@@ -1,4 +1,3 @@
-`default_nettype none
 module deserializer #(parameter DATA_SIZE = 4)(
     input iEn,
     input iClk,      // half_clock

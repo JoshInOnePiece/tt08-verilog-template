@@ -1,4 +1,3 @@
-`default_nettype none
 module assemble_key #(parameter KEY_SIZE = 4, parameter MSG_SIZE = 8)(
     input iEn,
     input iAssemble,

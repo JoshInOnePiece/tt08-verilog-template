@@ -1,4 +1,3 @@
-`default_nettype none
 module serialize #(parameter MSG_SIZE = 8)(
     input iClk,      // half_clock
     input iEn,

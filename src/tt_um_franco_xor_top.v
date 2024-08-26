@@ -1,5 +1,4 @@
-`default_nettype none
-module tt_um_franco_xor_top(
+module xor_top(
     input iEn,
     input iData_in,
     input iClk,

@@ -1,4 +1,3 @@
-`default_nettype none
 module xor_encrypt #(parameter MSG_SIZE = 8)(
     input iEn,
     input iClk,

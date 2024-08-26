@@ -1,4 +1,3 @@
-`default_nettype none
 module clock_divider(iClk,iRst,oClk_slow);
 
 input iClk;

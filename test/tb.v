@@ -25,10 +25,10 @@ module tb();
     // Instantiate the top module
     tt_um_franco_xor_top uut (
 
-      // `ifdef GL_TEST
-      //   .VPWR(1'b1),
-      //   .VGND(1'b0),
-      // `endif
+      `ifdef GL_TEST
+         .VPWR(1'b1),
+         .VGND(1'b0),
+       `endif
 
         .iEn(iEn),
         .iData_in(iData_in),
