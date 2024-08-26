@@ -23,7 +23,7 @@ module tb();
     wire oDone_flag;
 
     // Instantiate the top module
-    tt_um_franco_xor_top uut (
+    tt_um_franco_xor_top user_project (
 
       `ifdef GL_TEST
          .VPWR(1'b1),
