@@ -30,7 +30,7 @@ async def test_project(dut):
     dut._log.info("Start")
 
     # Set the clock period to 10 us (100 MHz)
-    clock = Clock(dut.iiClk, 10, units="ns")
+    clock = Clock(dut.iClk, 10, units="ns")
     cocotb.start_soon(clock.start())
     dut.iEn.value = 0
     dut.iData_in.value = 0
